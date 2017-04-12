@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>贪吃蛇面向过程版</title>
+	<style type="text/css">
+		#container{
+			width: 1000px;
+			height: 550px;
+			border:1px solid #ccc;
+		}
+		#ground{
+			width: 1000px;
+			height: 500px;
+			background-color: #ccc;
+			position: relative;
+		}
+		#control{
+			width: 1000px;
+			height: 50px;
+			line-height: 50px;
+		}
+		#brand{
+			float: left;
+		}
+		#buttons{
+			float: right;
+		}
+		.block{
+			width: 20px;
+			height: 20px;
+			float: left;
+			background-color: orange;
+		}
+		.block-snack{
+			background-color: red;
+			position: absolute;
+			top: 60px;
+		}
+	</style>
+</head>
+<body>
+<div id="container">
+	<div id="ground"></div>
+	<div id="control">
+		<div id="brand">JavaScript 贪吃蛇 by Zjl</div>
+		<div id="buttons">
+			<button>开始</button>
+			<button>暂停</button>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	(function(){
+		//1.创建操场
+		var oGroup = document.getElementById('ground');
+		for(var i=0;i<50*25;i++){
+			var oDiv = document.createElement('div');
+			oDiv.className='block';
+			oGroup.appendChild(oDiv); 
+		}
+		//2.创建蛇
+		for(var i=0;i<3;i++){
+			var oSnack = document.createElement('div');
+			oSnack.className='block block-snack';
+			oSnack.style.left=(3-i)*20+'px';
+			oGroup.appendChild(oSnack);
+		}
+	})();
+</script>
+</body>
+</html>
