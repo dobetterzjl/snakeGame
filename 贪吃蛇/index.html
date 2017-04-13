@@ -37,6 +37,10 @@
 			position: absolute;
 			top: 60px;
 		}
+		.food-block{
+			position: absolute;
+			background-color: blue;
+		}
 	</style>
 </head>
 <body>
@@ -45,8 +49,8 @@
 	<div id="control">
 		<div id="brand">JavaScript 贪吃蛇 by Zjl</div>
 		<div id="buttons">
-			<button>开始</button>
-			<button>暂停</button>
+			<button id="btn-start">开始</button>
+			<button id="btn-pause">暂停</button>
 		</div>
 	</div>
 </div>
@@ -60,12 +64,51 @@
 			oGroup.appendChild(oDiv); 
 		}
 		//2.创建蛇
+		var snackBody=[];
 		for(var i=0;i<3;i++){
 			var oSnack = document.createElement('div');
 			oSnack.className='block block-snack';
 			oSnack.style.left=(3-i)*20+'px';
 			oGroup.appendChild(oSnack);
+			snackBody.push(oSnack);
 		}
+		//3.创建食物
+		do{
+			var bFlag=true;
+			var iLeft = parseInt(Math.random()*50)*20;
+			var iTop = parseInt(Math.random()*25)*20;
+			for (var i = 0; i < snackBody.length; i++) {
+				if(snackBody[i].offsetLeft==iLeft && snackBody.offsetTop==iTop){
+					bFlag=false;
+				}
+			}
+		}
+		while(!bFlag);	
+		var oFood = document.createElement('div');
+		oFood.className='block food-block';
+		oFood.style.left = iLeft +'px';
+		oFood.style.top = iTop + 'px';
+		oGroup.appendChild(oFood);
+		//让蛇动
+		var oStart = document.getElementById('btn-start');
+		oStart.onclick = function(){
+			setInterval(function(){
+				var snackHead = snackBody[0];
+				var nextPos ={
+					left:snackHead.offsetLeft+20,
+					top:60
+				};
+				for (var i = 0; i < snackBody.length; i++) {
+					var nowPos = {
+						left:snackBody[i].offsetLeft,
+						top:snackBody[i].offsetTop
+					}
+					snackBody[i].style.left = nextPos.left+'px';
+					snackBody[i].style.top = nextPos.top+'px';
+					nextPos=nowPos;
+				}
+			},500);
+		};
 	})();
 </script>
 </body>
