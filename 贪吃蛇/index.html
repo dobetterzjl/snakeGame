@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
 	<title>贪吃蛇面向过程版</title>
-	<style type="text/css">
+	<style>
 		#container{
 			width: 1000px;
 			height: 550px;
-			border:1px solid #ccc;
+			border: 1px solid #000;
+			margin: 0 auto;
 		}
 		#ground{
 			width: 1000px;
 			height: 500px;
-			background-color: #ccc;
+			background: #ccc;
 			position: relative;
 		}
 		#control{
@@ -29,87 +30,212 @@
 		.block{
 			width: 20px;
 			height: 20px;
+			background: orange;
 			float: left;
-			background-color: orange;
 		}
-		.block-snack{
-			background-color: red;
+		.snake-block{
+			background: #f00;
 			position: absolute;
 			top: 60px;
 		}
 		.food-block{
+			background: #00f;
 			position: absolute;
-			background-color: blue;
 		}
+
 	</style>
 </head>
 <body>
-<div id="container">
-	<div id="ground"></div>
-	<div id="control">
-		<div id="brand">JavaScript 贪吃蛇 by Zjl</div>
-		<div id="buttons">
-			<button id="btn-start">开始</button>
-			<button id="btn-pause">暂停</button>
+	<div id="container">
+		<div id="ground"></div>
+		<div id="control">
+			<div id="brand">JavaScript 贪吃蛇 By zjl</div>
+			<div id="buttons">
+				<button id="btn-start">开始</button>
+				<button id="btn-pause">暂停</button>
+			</div>
 		</div>
 	</div>
-</div>
-<script type="text/javascript">
-	(function(){
-		//1.创建操场
-		var oGroup = document.getElementById('ground');
-		for(var i=0;i<50*25;i++){
-			var oDiv = document.createElement('div');
-			oDiv.className='block';
-			oGroup.appendChild(oDiv); 
-		}
-		//2.创建蛇
-		var snackBody=[];
-		for(var i=0;i<3;i++){
-			var oSnack = document.createElement('div');
-			oSnack.className='block block-snack';
-			oSnack.style.left=(3-i)*20+'px';
-			oGroup.appendChild(oSnack);
-			snackBody.push(oSnack);
-		}
-		//3.创建食物
-		do{
-			var bFlag=true;
-			var iLeft = parseInt(Math.random()*50)*20;
-			var iTop = parseInt(Math.random()*25)*20;
-			for (var i = 0; i < snackBody.length; i++) {
-				if(snackBody[i].offsetLeft==iLeft && snackBody.offsetTop==iTop){
-					bFlag=false;
-				}
+	<script>
+		
+		(function(){
+
+			var direction = 'right';//蛇移动方向，初始向右
+			var oFood;
+			var timer = null;
+
+			//1. 初始化草场
+			var oGround = document.getElementById('ground');
+			for(var i=0; i<50*25; i++){
+				var oDiv = document.createElement('div');
+				oDiv.className = 'block';
+				oGround.appendChild(oDiv);
 			}
-		}
-		while(!bFlag);	
-		var oFood = document.createElement('div');
-		oFood.className='block food-block';
-		oFood.style.left = iLeft +'px';
-		oFood.style.top = iTop + 'px';
-		oGroup.appendChild(oFood);
-		//让蛇动
-		var oStart = document.getElementById('btn-start');
-		oStart.onclick = function(){
-			setInterval(function(){
-				var snackHead = snackBody[0];
-				var nextPos ={
-					left:snackHead.offsetLeft+20,
-					top:60
-				};
-				for (var i = 0; i < snackBody.length; i++) {
-					var nowPos = {
-						left:snackBody[i].offsetLeft,
-						top:snackBody[i].offsetTop
+
+			//2. 创建蛇
+			var snakeBody = [];
+			for(var i=0; i<3; i++){
+				var oDiv = document.createElement('div');
+				oDiv.className = 'block snake-block';
+				oDiv.style.left = (3 - i) * 20 + 'px';
+				oGround.appendChild(oDiv);
+				snakeBody.push(oDiv);
+			}
+
+			//3. 创建食物
+			function createFood(){
+				do{
+					var bFlag = true;//一个标识位，true代表找到合适的食物坐标
+					var iLeft = parseInt(Math.random() * 50) * 20;//0-980
+					var iTop = parseInt(Math.random() * 25) * 20;
+					for(var i=0; i<snakeBody.length; i++){
+						if(snakeBody[i].offsetLeft == iLeft && snakeBody[i].offsetTop == iTop){
+							bFlag = false;
+						}
 					}
-					snackBody[i].style.left = nextPos.left+'px';
-					snackBody[i].style.top = nextPos.top+'px';
-					nextPos=nowPos;
+				}while(!bFlag);
+				oFood = document.createElement('div');
+				oFood.className = 'block food-block';
+				oFood.style.left = iLeft + 'px';
+				oFood.style.top = iTop + 'px';
+				oGround.appendChild(oFood);
+			}
+			createFood();
+			
+			var oBtnStart = document.getElementById('btn-start');
+			oBtnStart.onclick = function(){
+				timer = setInterval(function(){
+					move();
+					
+				}, 300);
+			};
+
+			
+
+			
+
+
+
+
+
+
+			//蛇移动的函数
+			function move(){
+				var snakeHead = snakeBody[0];
+				var nextPos;
+				if(direction == 'left'){
+					nextPos = {
+						left: snakeHead.offsetLeft - 20,
+						top: snakeHead.offsetTop
+					};
+				}else if(direction == 'top'){
+					nextPos = {
+						left: snakeHead.offsetLeft,
+						top: snakeHead.offsetTop - 20
+					};
+				}else if(direction == 'right'){
+					nextPos = {
+						left: snakeHead.offsetLeft + 20,
+						top: snakeHead.offsetTop
+					};
+				}else if(direction == 'down'){
+					nextPos = {
+						left: snakeHead.offsetLeft,
+						top: snakeHead.offsetTop + 20
+					};
 				}
-			},500);
-		};
-	})();
-</script>
+				
+				//4. 蛇吃食物和增长身体
+				if(nextPos.left == oFood.offsetLeft && nextPos.top == oFood.offsetTop){
+					oFood.className = 'block snake-block';
+					oFood.style.left = snakeHead.offsetLeft + 'px';
+					oFood.style.top = snakeHead.offsetTop + 'px';
+					snakeHead.style.left = nextPos.left + 'px';
+					snakeHead.style.top = nextPos.top + 'px';
+					snakeBody.splice(1,0,oFood);
+					createFood();
+				}else{
+					for(var i=0; i<snakeBody.length; i++){
+						var nowPos = {
+							left: snakeBody[i].offsetLeft,
+							top: snakeBody[i].offsetTop
+						};
+						snakeBody[i].style.left = nextPos.left + 'px';
+						snakeBody[i].style.top = nextPos.top + 'px';
+						nextPos = nowPos;
+					}
+				}
+
+				//5. 判断是否吃到自己和墙
+				for(var i=4; i<snakeBody.length; i++){
+					if(snakeBody[i].offsetLeft == snakeHead.offsetLeft && snakeBody[i].offsetTop == snakeHead.offsetTop){
+						alert('Game over!');
+						clearInterval(timer);
+					}
+				}
+				if (snakeHead.offsetTop<0||snakeHead.offsetTop>480||snakeHead.offsetLeft<0||snakeHead.offsetLeft>980) {
+					alert('Game over!');
+						clearInterval(timer);
+				}
+
+
+			}
+var oPause = document.getElementById('btn-pause');
+oPause.onclick = function(){
+	clearInterval(timer);
+}
+			//给document注册onkeydown事件
+			document.onkeydown = function(e){
+				e = e || window.event;
+				var keyCode = e.which || e.keyCode;
+				if(keyCode ==  37){//left
+					if(direction != 'right'){
+						direction = 'left';
+					}
+				}else if(keyCode ==  38){//top
+					if(direction != 'down'){
+						direction = 'top';
+					}
+
+				}else if(keyCode ==  39){//right
+					if(direction != 'left'){
+						direction = 'right';
+					}
+
+				}else if(keyCode ==  40){//down
+					if(direction != 'top'){
+						direction = 'down';
+					}
+
+				}
+				move();
+			};
+
+
+
+
+
+
+
+		})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</script>
 </body>
 </html>
