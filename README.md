@@ -1,5 +1,6 @@
 # snakeGame
 一个JavaScript贪吃蛇小游戏，面向过程版
+[DEMO](https://dobetterzjl.github.io/snakeGame/贪吃蛇)
 
 难点：
 
