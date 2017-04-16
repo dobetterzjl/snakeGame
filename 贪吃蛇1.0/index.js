@@ -1,12 +1,12 @@
-@@ -1,166 +0,0 @@
+
 
 		(function(){
 
-			var direction = 'right';//ÉßÒÆ¶¯·½Ïò£¬³õÊ¼ÏòÓÒ
+			var direction = 'right';//è›‡ç§»åŠ¨æ–¹å‘ï¼Œåˆå§‹å‘å³
 			var oFood;
 			var timer = null;
 
-			//1. ³õÊ¼»¯²İ³¡
+			//1. åˆå§‹åŒ–è‰åœº
 			var oGround = document.getElementById('ground');
 			for(var i=0; i<50*25; i++){
 				var oDiv = document.createElement('div');
@@ -14,7 +14,7 @@
 				oGround.appendChild(oDiv);
 			}
 
-			//2. ´´½¨Éß
+			//2. åˆ›å»ºè›‡
 			var snakeBody = [];
 			for(var i=0; i<3; i++){
 				var oDiv = document.createElement('div');
@@ -24,10 +24,10 @@
 				snakeBody.push(oDiv);
 			}
 
-			//3. ´´½¨Ê³Îï
+			//3. åˆ›å»ºé£Ÿç‰©
 			function createFood(){
 				do{
-					var bFlag = true;//Ò»¸ö±êÊ¶Î»£¬true´ú±íÕÒµ½ºÏÊÊµÄÊ³Îï×ø±ê
+					var bFlag = true;//ä¸€ä¸ªæ ‡è¯†ä½ï¼Œtrueä»£è¡¨æ‰¾åˆ°åˆé€‚çš„é£Ÿç‰©åæ ‡
 					var iLeft = parseInt(Math.random() * 50) * 20;//0-980
 					var iTop = parseInt(Math.random() * 25) * 20;
 					for(var i=0; i<snakeBody.length; i++){
@@ -61,7 +61,7 @@
 
 
 
-			//ÉßÒÆ¶¯µÄº¯Êı
+			//è›‡ç§»åŠ¨çš„å‡½æ•°
 			function move(){
 				var snakeHead = snakeBody[0];
 				var nextPos;
@@ -87,7 +87,7 @@
 					};
 				}
 				
-				//4. Éß³ÔÊ³ÎïºÍÔö³¤ÉíÌå
+				//4. è›‡åƒé£Ÿç‰©å’Œå¢é•¿èº«ä½“
 				if(nextPos.left == oFood.offsetLeft && nextPos.top == oFood.offsetTop){
 					oFood.className = 'block snake-block';
 					oFood.style.left = snakeHead.offsetLeft + 'px';
@@ -108,7 +108,7 @@
 					}
 				}
 
-				//5. ÅĞ¶ÏÊÇ·ñ³Ôµ½×Ô¼ººÍÇ½
+				//5. åˆ¤æ–­æ˜¯å¦åƒåˆ°è‡ªå·±å’Œå¢™
 				for(var i=4; i<snakeBody.length; i++){
 					if(snakeBody[i].offsetLeft == snakeHead.offsetLeft && snakeBody[i].offsetTop == snakeHead.offsetTop){
 						alert('Game over!');
@@ -126,7 +126,7 @@ var oPause = document.getElementById('btn-pause');
 oPause.onclick = function(){
 	clearInterval(timer);
 }
-			//¸ødocument×¢²áonkeydownÊÂ¼ş
+			//ç»™documentæ³¨å†Œonkeydownäº‹ä»¶
 			document.onkeydown = function(e){
 				e = e || window.event;
 				var keyCode = e.which || e.keyCode;
