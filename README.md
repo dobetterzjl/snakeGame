@@ -1,5 +1,5 @@
 # snakeGame
-一个JavaScript贪吃蛇小游戏，面向过程版
+一个JavaScript贪吃蛇小游戏，面向对象版
 [DEMO](https://dobetterzjl.github.io/snakeGame/贪吃蛇2.0)
 
 面向对象与面向过程主要区别：
